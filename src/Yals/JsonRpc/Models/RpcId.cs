@@ -7,9 +7,15 @@ namespace Yals.JsonRpc.Models
     [JsonConverter(typeof(RpcIdJsonConverter))]
     public class RpcId
     {
-        public string Value { get; set; }
+        public string Value { get; }
 
-        public RpcIdKind Kind { get; set; }
+        public RpcIdKind Kind { get; }
+
+        public RpcId(string value, RpcIdKind kind)
+        {
+            Value = value;
+            Kind = kind;
+        }
     }
 
     public enum RpcIdKind
@@ -27,7 +33,7 @@ namespace Yals.JsonRpc.Models
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var id = (RpcId)value;
+            var id = (RpcId) value;
 
             switch (id.Kind)
             {
@@ -44,24 +50,15 @@ namespace Yals.JsonRpc.Models
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Integer)
+            switch (reader.TokenType)
             {
-                return new RpcId
-                {
-                    Value = reader.Value.ToString(),
-                    Kind = RpcIdKind.Number
-                };
+                case JsonToken.Integer:
+                    return new RpcId(reader.Value.ToString(), RpcIdKind.Number);
+                case JsonToken.String:
+                    return new RpcId(reader.Value.ToString(), RpcIdKind.String);
+                default:
+                    throw new NotImplementedException("Unknown RPC Id Kind.");
             }
-            if (reader.TokenType == JsonToken.String)
-            {
-                return new RpcId
-                {
-                    Value = reader.Value.ToString(),
-                    Kind = RpcIdKind.String
-                };
-            }
-
-            throw new NotImplementedException("Unknown RPC Id Kind.");
         }
     }
 }

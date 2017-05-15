@@ -46,11 +46,7 @@ namespace Yals.Tests.JsonRpc
         public void When_writing_id_and_is_a_number_then_write_correctly()
         {
             var id = Autofixture.Create<int>();
-            var rpcId = new RpcId
-            {
-                Kind = RpcIdKind.Number,
-                Value = id.ToString()
-            };
+            var rpcId = new RpcId(id.ToString(), RpcIdKind.Number);
 
             // Act
             var result = JsonConvert.SerializeObject(rpcId);
@@ -63,11 +59,7 @@ namespace Yals.Tests.JsonRpc
         public void When_writing_id_and_is_a_string_then_write_correctly()
         {
             var id = Autofixture.Create<int>();
-            var rpcId = new RpcId
-            {
-                Kind = RpcIdKind.String,
-                Value = id.ToString()
-            };
+            var rpcId = new RpcId(id.ToString(), RpcIdKind.String);
 
             // Act
             var result = JsonConvert.SerializeObject(rpcId);
