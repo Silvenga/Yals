@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Yals.JsonRpc
+namespace Yals.JsonRpc.Parsers
 {
-    public static class Parser
+    public static class ParserHelpers
     {
         public static IEnumerable<char[]> StreamToBlocks(this StreamReader reader)
         {
+            // TODO Should we find encoding later?
             const int bufferSize = 1024;
             var buffer = new char[bufferSize];
             int blockLength;
@@ -22,6 +23,7 @@ namespace Yals.JsonRpc
 
         public static IEnumerable<string> StreamToLines(this IEnumerable<char[]> enumerable)
         {
+            // This fast, no, but easy to read, yes.
             var reader = new StringBuilder();
             foreach (var block in enumerable)
             {
