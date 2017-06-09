@@ -2,9 +2,7 @@
 
 using Newtonsoft.Json;
 
-using Yals.JsonRpc.Models;
-
-namespace Yals.JsonRpc
+namespace Yals.JsonRpc.Models
 {
     public interface IRpcMessage
     {

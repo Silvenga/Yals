@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{43DAE6C4-D4A3-4932-AAAD-A679C80C9561}</ProjectGuid>
+    <ProjectGuid>{AF4FE948-D5F8-4324-B9AC-60491D91652C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Yals.Tests</RootNamespace>
-    <AssemblyName>Yals.Tests</AssemblyName>
+    <RootNamespace>Yals.JsonRpc.Tests</RootNamespace>
+    <AssemblyName>Yals.JsonRpc.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,15 +68,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\RpcIdJsonConverterFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Yals\Yals.csproj">
-      <Project>{75bc9d88-dce6-4309-bfb5-97e9250a5311}</Project>
-      <Name>Yals</Name>
+    <Folder Include="Parsers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Yals.JsonRpc\Yals.JsonRpc.csproj">
+      <Project>{ec71af23-4a02-4f7d-bd62-3d5b3f05a7e7}</Project>
+      <Name>Yals.JsonRpc</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

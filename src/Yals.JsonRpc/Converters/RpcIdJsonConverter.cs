@@ -2,28 +2,10 @@
 
 using Newtonsoft.Json;
 
-namespace Yals.JsonRpc.Models
+using Yals.JsonRpc.Models;
+
+namespace Yals.JsonRpc.Converters
 {
-    [JsonConverter(typeof(RpcIdJsonConverter))]
-    public class RpcId
-    {
-        public string Value { get; }
-
-        public RpcIdKind Kind { get; }
-
-        public RpcId(string value, RpcIdKind kind)
-        {
-            Value = value;
-            Kind = kind;
-        }
-    }
-
-    public enum RpcIdKind
-    {
-        String,
-        Number
-    }
-
     public class RpcIdJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)

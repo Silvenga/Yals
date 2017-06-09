@@ -8,9 +8,9 @@ using Xunit;
 
 using Yals.JsonRpc.Models;
 
-namespace Yals.Tests.JsonRpc
+namespace Yals.JsonRpc.Tests.Converters
 {
-    public class RpcIdFacts
+    public class RpcIdJsonConverterFacts
     {
         private static readonly Fixture Autofixture = new Fixture();
 
