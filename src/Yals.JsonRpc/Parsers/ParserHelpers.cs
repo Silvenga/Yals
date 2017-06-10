@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 
 namespace Yals.JsonRpc.Parsers
 {
@@ -21,21 +21,26 @@ namespace Yals.JsonRpc.Parsers
             }
         }
 
-        public static IEnumerable<string> StreamToLines(this IEnumerable<char[]> enumerable)
+        public static IEnumerable<MessageBodyCompleteToken> StreamToTokens(this IEnumerable<char[]> enumerable)
         {
-            // This fast, no, but easy to read, yes.
-            var reader = new StringBuilder();
-            foreach (var block in enumerable)
+            var enumerator = enumerable.SelectMany(x => x).GetEnumerator();
+            var seeker = new BufferedSeeker(enumerator);
+
+            ParsingToken currentToken = new MessageStream();
+            ParsingToken lastToken = null;
+            ParsingToken tempToken;
+            while ((tempToken = currentToken.Process(seeker, lastToken)) != null)
             {
-                foreach (var c in block)
+                seeker.SeekToPeek();
+                lastToken = currentToken;
+
+                var token = currentToken as MessageBodyCompleteToken;
+                if (token != null)
                 {
-                    reader.Append(c);
-                    if (c == '\n')
-                    {
-                        yield return reader.ToString();
-                        reader.Clear();
-                    }
+                    yield return token;
                 }
+
+                currentToken = tempToken;
             }
         }
     }

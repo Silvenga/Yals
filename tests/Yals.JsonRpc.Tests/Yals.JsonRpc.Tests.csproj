@@ -69,14 +69,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\RpcIdJsonConverterFacts.cs" />
+    <Compile Include="Parsers\BufferedSeekerFacts.cs" />
+    <Compile Include="Parsers\ParserHelpersFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\initialize.rpc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parsers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\src\Yals.JsonRpc\Yals.JsonRpc.csproj">
       <Project>{ec71af23-4a02-4f7d-bd62-3d5b3f05a7e7}</Project>
