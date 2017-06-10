@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using Yals.JsonRpc.Parsers.Tokens;
+
 namespace Yals.JsonRpc.Parsers
 {
     public static class ParserHelpers
@@ -21,7 +23,7 @@ namespace Yals.JsonRpc.Parsers
             }
         }
 
-        public static IEnumerable<MessageBodyCompleteToken> StreamToTokens(this IEnumerable<char[]> enumerable)
+        public static IEnumerable<MessageBodyCompleted> StreamToTokens(this IEnumerable<char[]> enumerable)
         {
             var enumerator = enumerable.SelectMany(x => x).GetEnumerator();
             var seeker = new BufferedSeeker(enumerator);
@@ -34,7 +36,7 @@ namespace Yals.JsonRpc.Parsers
                 seeker.SeekToPeek();
                 lastToken = currentToken;
 
-                var token = currentToken as MessageBodyCompleteToken;
+                var token = currentToken as MessageBodyCompleted;
                 if (token != null)
                 {
                     yield return token;
