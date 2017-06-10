@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Yals.JsonRpc.Parsers
@@ -221,6 +222,10 @@ namespace Yals.JsonRpc.Parsers
 
         public ContentPart(MessageBodyToken parent, int connectLength) : base(parent)
         {
+            if (connectLength == -1)
+            {
+                throw new Exception("Content is being parsed, but no content length header was found.");
+            }
             _connectLength = connectLength;
         }
 
