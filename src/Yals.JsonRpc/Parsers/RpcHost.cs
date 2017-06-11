@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+
+using Yals.JsonRpc.Parsers.Tokens;
 
 namespace Yals.JsonRpc.Parsers
 {
@@ -9,6 +13,10 @@ namespace Yals.JsonRpc.Parsers
         private readonly Stream _input;
         private readonly Stream _output;
         private Task _inputWorker;
+        private Task _outputWorker;
+
+        private readonly BlockingCollection<string> _inputBuffer = new BlockingCollection<string>();
+        private readonly BlockingCollection<string> _outputBuffer = new BlockingCollection<string>();
 
         private bool _running;
 
@@ -20,29 +28,43 @@ namespace Yals.JsonRpc.Parsers
 
         public void Start()
         {
+            if (_running)
+            {
+                throw new InvalidOperationException("Cannot start when already running.");
+            }
+
             _running = true;
 
             // TODO Cancelation tokens.
             _inputWorker = Task.Run(() => InputWorkerLoop());
+            _outputWorker = Task.Run(() => OutputWorkerLoop());
         }
 
         private void InputWorkerLoop()
         {
             var reader = new StreamReader(_input);
-            //var lines = reader.StreamToBlocks().StreamToLines();
-            //foreach (var line in lines)
-            //{
-            //    if (!_running)
-            //    {
-            //        return;
-            //    }
+            var contentTokens = reader.StreamToBlocks().StreamToTokens().OfType<MessageBodyContent>();
+            foreach (var content in contentTokens)
+            {
+                if (_inputBuffer.IsAddingCompleted || !_inputBuffer.TryAdd(content.Content))
+                {
+                    return;
+                }
+            }
+        }
 
-
-            //}
+        private void OutputWorkerLoop()
+        {
+            while (!_outputBuffer.IsCompleted)
+            {
+                Task.Delay(10);
+            }
         }
 
         public void Dispose()
         {
+            _outputBuffer.CompleteAdding();
+            _outputBuffer.CompleteAdding();
             _running = false;
         }
     }

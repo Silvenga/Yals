@@ -23,26 +23,21 @@ namespace Yals.JsonRpc.Parsers
             }
         }
 
-        public static IEnumerable<MessageBodyCompleted> StreamToTokens(this IEnumerable<char[]> enumerable)
+        public static IEnumerable<ParsingToken> StreamToTokens(this IEnumerable<char[]> enumerable)
         {
             var enumerator = enumerable.SelectMany(x => x).GetEnumerator();
-            var seeker = new BufferedSeeker(enumerator);
-
-            ParsingToken currentToken = new MessageStream();
-            ParsingToken lastToken = null;
-            ParsingToken tempToken;
-            while ((tempToken = currentToken.Process(seeker, lastToken)) != null)
+            using (var seeker = new BufferedSeeker(enumerator))
             {
-                seeker.SeekToPeek();
-                lastToken = currentToken;
-
-                var token = currentToken as MessageBodyCompleted;
-                if (token != null)
+                ParsingToken currentToken = new MessageStream();
+                ParsingToken lastToken = null;
+                ParsingToken tempToken;
+                while ((tempToken = currentToken.Process(seeker, lastToken)) != null)
                 {
-                    yield return token;
+                    seeker.SeekToPeek();
+                    lastToken = currentToken;
+                    yield return currentToken;
+                    currentToken = tempToken;
                 }
-
-                currentToken = tempToken;
             }
         }
     }

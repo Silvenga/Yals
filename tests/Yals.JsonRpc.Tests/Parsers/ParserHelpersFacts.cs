@@ -6,6 +6,7 @@ using FluentAssertions;
 using Xunit;
 
 using Yals.JsonRpc.Parsers;
+using Yals.JsonRpc.Parsers.Tokens;
 
 namespace Yals.JsonRpc.Tests.Parsers
 {
@@ -18,7 +19,7 @@ namespace Yals.JsonRpc.Tests.Parsers
             var reader = new StreamReader(stream);
 
             // Act
-            var tokens = reader.StreamToBlocks().StreamToTokens().ToList();
+            var tokens = reader.StreamToBlocks().StreamToTokens().OfType<MessageBodyCompleted>().ToList();
 
             // Assert
             tokens.Should().HaveCount(2);
