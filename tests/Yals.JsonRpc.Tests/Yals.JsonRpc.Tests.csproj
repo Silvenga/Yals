@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\RpcIdJsonConverterFacts.cs" />
+    <Compile Include="Converters\RpcInputConverterFacts.cs" />
     <Compile Include="Parsers\BufferedSeekerFacts.cs" />
     <Compile Include="Parsers\ParserHelpersFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
