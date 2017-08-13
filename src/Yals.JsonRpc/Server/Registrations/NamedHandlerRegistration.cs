@@ -16,7 +16,7 @@ namespace Yals.JsonRpc.Server.Registrations
             Method = method;
         }
 
-        public bool CanHandle(IExecutionContext context)
+        public bool CanHandle(IEncounterContext context)
         {
             return Method.Equals(context.Method, StringComparison.OrdinalIgnoreCase);
         }
@@ -31,7 +31,7 @@ namespace Yals.JsonRpc.Server.Registrations
             Handler = handler;
         }
 
-        public async Task<object> HandleRequest(IExecutionContext context, JToken parameters)
+        public async Task<object> HandleRequest(IEncounterContext context, JToken parameters)
         {
             var response = await Handler.HandleRequestAsync(context, parameters.ToObject<TRequest>());
             return response;
@@ -47,7 +47,7 @@ namespace Yals.JsonRpc.Server.Registrations
             Handler = handler;
         }
 
-        public async Task HandleNotification(IExecutionContext context, JToken parameters)
+        public async Task HandleNotification(IEncounterContext context, JToken parameters)
         {
             await Handler.HandleRequestAsync(context, parameters.ToObject<TRequest>());
         }

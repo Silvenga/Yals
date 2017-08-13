@@ -4,6 +4,6 @@ namespace Yals.JsonRpc.Server.Handlers
 {
     public abstract class RpcNotificationHandler<T>: BaseRpcHandler
     {
-        public abstract Task HandleRequestAsync(IExecutionContext context, T notification);
+        public abstract Task HandleRequestAsync(IEncounterContext context, T notification);
     }
 }

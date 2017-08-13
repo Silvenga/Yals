@@ -4,19 +4,19 @@ namespace Yals.JsonRpc.Server.Handlers
 {
     public abstract class RpcRequestHandler<T> : BaseRpcHandler
     {
-        public abstract Task<IExecutionResult> HandleRequestAsync(IExecutionContext context, T request);
+        public abstract Task<IEncounterResult> HandleRequestAsync(IEncounterContext context, T request);
 
-        public virtual IExecutionResult Success<TResponse>(TResponse response)
+        public virtual IEncounterResult Success<TResponse>(TResponse response)
         {
-            return new SuccessfulExecution<TResponse>(response);
+            return new SuccessfulEncounter<TResponse>(response);
         }
     }
 
-    public class SuccessfulExecution<T> : IExecutionResult
+    public class SuccessfulEncounter<T> : IEncounterResult
     {
         public object Result { get; set; }
 
-        public SuccessfulExecution(T response)
+        public SuccessfulEncounter(T response)
         {
             Result = response;
         }

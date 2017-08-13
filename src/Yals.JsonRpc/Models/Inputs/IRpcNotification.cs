@@ -4,9 +4,6 @@ namespace Yals.JsonRpc.Models.Inputs
 {
     public interface IRpcNotification<T> : IRpcInputMessage
     {
-        [JsonProperty("method")]
-        string Method { get; set; }
-
         [JsonProperty("params")]
         T Parameters { get; set; }
     }

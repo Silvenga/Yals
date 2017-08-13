@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using Yals.JsonRpc.Server.Handlers;
 using Yals.JsonRpc.Server.Registrations;
 
 namespace Yals.JsonRpc.Server
 {
-    public class RpcMethodRegistrar
+    public interface IRpcHandlerRegistrar
+    {
+        IList<IHandlerRegistration> GetRegistrations(IEncounterContext context);
+    }
+
+    public class RpcHandlerRegistrar : IRpcHandlerRegistrar
     {
         private readonly IList<IHandlerRegistration> _registrations = new List<IHandlerRegistration>();
 
@@ -20,14 +26,19 @@ namespace Yals.JsonRpc.Server
             var registration = new NamedNotificationHandlerRegistration<RpcNotificationHandler<TRequest>, TRequest>(method, handler);
             _registrations.Add(registration);
         }
+
+        public IList<IHandlerRegistration> GetRegistrations(IEncounterContext context)
+        {
+            return _registrations.Where(x => x.CanHandle(context)).ToList();
+        }
     }
 
-    public interface IExecutionContext
+    public interface IEncounterContext
     {
         string Method { get; }
     }
 
-    public interface IExecutionResult
+    public interface IEncounterResult
     {
         object Result { get; set; }
     }

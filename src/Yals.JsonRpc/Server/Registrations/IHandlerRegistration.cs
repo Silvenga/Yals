@@ -6,16 +6,16 @@ namespace Yals.JsonRpc.Server.Registrations
 {
     public interface IHandlerRegistration
     {
-        bool CanHandle(IExecutionContext context);
+        bool CanHandle(IEncounterContext context);
     }
 
     public interface IRequestHandlerRegistration : IHandlerRegistration
     {
-        Task<object> HandleRequest(IExecutionContext context, JToken parameters);
+        Task<object> HandleRequest(IEncounterContext context, JToken parameters);
     }
 
     public interface INotificationHandlerRegistration : IHandlerRegistration
     {
-        Task HandleNotification(IExecutionContext context, JToken parameters);
+        Task HandleNotification(IEncounterContext context, JToken parameters);
     }
 }

@@ -9,9 +9,6 @@ namespace Yals.JsonRpc.Models.Inputs
         [JsonProperty("id"), CanBeNull]
         RpcId Id { get; set; }
 
-        [JsonProperty("method")]
-        string Method { get; set; }
-
         [JsonProperty("params")]
         T Parameters { get; set; }
     }
