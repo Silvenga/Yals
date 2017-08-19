@@ -57,9 +57,13 @@ namespace Yals.JsonRpc.Server
             var result = await handler.HandleRequest(context, message.Parameters);
         }
 
-        private async Task ProcessNotification(EncounterContext context, IList<INotificationHandlerRegistration> possibleHandlers, IRpcNotification<JToken> message)
+        private async Task ProcessNotification(EncounterContext context, IList<INotificationHandlerRegistration> possibleHandlers,
+                                               IRpcNotification<JToken> message)
         {
-
+            foreach (var handler in possibleHandlers)
+            {
+                await handler.HandleNotification(context, message.Parameters);
+            }
         }
     }
 
@@ -70,6 +74,6 @@ namespace Yals.JsonRpc.Server
         public EncounterContext(string method)
         {
             Method = method;
-        } 
+        }
     }
 }
